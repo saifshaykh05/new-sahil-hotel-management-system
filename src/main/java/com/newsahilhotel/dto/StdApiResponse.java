@@ -7,7 +7,7 @@ import lombok.*;
 @Setter
 @Getter
 @Builder
-public class StandardApiResponse <T>{
+public class StdApiResponse<T>{
     private Boolean status;
     private String message;
     private T data;

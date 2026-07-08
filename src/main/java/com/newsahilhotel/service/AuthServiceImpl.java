@@ -6,6 +6,7 @@ import com.newsahilhotel.dto.UserResponseDto;
 import com.newsahilhotel.entity.User;
 import com.newsahilhotel.repository.UserRepository;
 import com.newsahilhotel.security.CustomUserDetails;
+import com.newsahilhotel.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService{
-    private final UserRepository userRepository;
+    private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     @Override
     public LoginResponseDto login(LoginRequestDto requestDto) {
@@ -25,12 +26,13 @@ public class AuthServiceImpl implements AuthService{
         Authentication authentication=authenticationManager.authenticate(authenticationToken);
         CustomUserDetails userDetails=(CustomUserDetails)authentication.getPrincipal();
         User user=userDetails.getUser();
-        return mapUserToResponse(user);
+        String token = jwtService.generateJwtToken(userDetails);
+        return mapUserToResponse(user,token);
     }
-    public LoginResponseDto mapUserToResponse(User user){
+    private LoginResponseDto mapUserToResponse(User user,String token){
         UserResponseDto userResponseDto=new UserResponseDto(user.getId(), user.getFullName(), user.getEmail(), user.getPhoneNumber(),user.getRole(),user.getActive());
         LoginResponseDto responseDto=new LoginResponseDto(
-          null,"Bearer", userResponseDto
+          token,"Bearer", userResponseDto
         );
         return responseDto;
     }

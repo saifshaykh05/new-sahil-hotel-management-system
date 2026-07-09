@@ -6,5 +6,5 @@ import com.newsahilhotel.dto.UserResponseDto;
 
 public interface AuthService {
     LoginResponseDto login(LoginRequestDto requestDto);
-    UserResponseDto register(RegisterRequestDto request);
+    UserResponseDto register(Registe request);
 }

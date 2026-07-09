@@ -29,6 +29,11 @@ public class AuthServiceImpl implements AuthService{
         String token = jwtService.generateJwtToken(userDetails);
         return mapUserToResponse(user,token);
     }
+
+
+
+
+
     private LoginResponseDto mapUserToResponse(User user,String token){
         UserResponseDto userResponseDto=new UserResponseDto(user.getId(), user.getFullName(), user.getEmail(), user.getPhoneNumber(),user.getRole(),user.getActive());
         LoginResponseDto responseDto=new LoginResponseDto(
